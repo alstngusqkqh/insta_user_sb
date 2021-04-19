@@ -21,6 +21,7 @@ public class MpaUsrArticleController {
 	public MpaUsrArticleController() {
 		articles = new ArrayList<>();
 		articleLastId = 0;
+		makeTestData();
 	}
 	
 	@RequestMapping("/mpaUsr/article/doWrite")
@@ -33,6 +34,30 @@ public class MpaUsrArticleController {
 		
 	}
 	
+	@RequestMapping("/mpaUsr/article/doDelete")
+	@ResponseBody
+	public ResultData doDelete(int id) {
+		boolean deleted = deleteArticleById(id);
+		
+		if(deleted == false) {
+			return new ResultData("F-1", id + "번 글은 존재하지 않습니다.", "id" , id);
+		}
+		
+		return new ResultData("S-1", id + "번 글이 삭제되었습니다.", "id", id);
+		
+	}
+	
+	private boolean deleteArticleById(int id) {
+		
+		for (Article article : articles) {
+			if(article.getId() == id) {
+				articles.remove(article);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private int writeArticle(String title, String body) {
 		
 		int id = articleLastId + 1;
@@ -77,5 +102,14 @@ public class MpaUsrArticleController {
 		
 		return null;
 	}
+	
+	private void makeTestData() {
+		
+		for(int i = 0; i < 10; i++ ) {
+			writeArticle("제목1", "내용1");	
+		}	
+		
+	}
+
 }
 
