@@ -34,6 +34,21 @@ public class MpaUsrArticleController {
 		
 	}
 	
+	@RequestMapping("/mpaUsr/article/doModify")
+	@ResponseBody
+	public ResultData doModify(int id, String title, String body) {
+		boolean modified = ModifyArticle(id, title, body);
+		
+		if(modified == false) {
+			return new ResultData("F-1", id + "번 글은 존재하지 않습니다.", "id" , id);
+		}
+		
+		return new ResultData("S-1", id + "번 글이 수정되었습니다.", "article", getArticleById(id));
+		
+	}
+	
+
+
 	@RequestMapping("/mpaUsr/article/doDelete")
 	@ResponseBody
 	public ResultData doDelete(int id) {
@@ -47,15 +62,42 @@ public class MpaUsrArticleController {
 		
 	}
 	
+	@RequestMapping("/mpaUsr/article/getArticle")
+	@ResponseBody
+	public ResultData getArticle(int id) {
+		Article article = getArticleById(id);
+		
+		if(article == null) {
+			return new ResultData("F-1", id + "번 글은 존재하지 않습니다.", "id" , id);
+		}
+		return new ResultData("S-1", article.getId() + "번 글입니다.", "article", article);
+	}
+	
+	// 내부
+	
+	private boolean ModifyArticle(int id, String title, String body) {
+		Article article = getArticleById(id);
+		
+		if(article == null ) {
+			return false;
+		}
+		
+		article.setTitle(title);
+		article.setBody(body);
+		article.setUpdateDate(Util.getNowDateStr());
+		return true;
+	}
+	
 	private boolean deleteArticleById(int id) {
 		
-		for (Article article : articles) {
-			if(article.getId() == id) {
-				articles.remove(article);
-				return true;
-			}
+		Article article = getArticleById(id);
+		
+		if(article == null ) {
+			return false;
 		}
-		return false;
+		
+		articles.remove(article);
+		return true;
 	}
 
 	private int writeArticle(String title, String body) {
@@ -72,16 +114,7 @@ public class MpaUsrArticleController {
 		return id;
 	}
 
-	@RequestMapping("/mpaUsr/article/getArticle")
-	@ResponseBody
-	public ResultData getArticle(int id) {
-		Article article = getArticleById(id);
-		
-		if(article == null) {
-			return new ResultData("F-1", id + "번 글은 존재하지 않습니다.", "id" , id);
-		}
-		return new ResultData("S-1", article.getId() + "번 글입니다.", "article", article);
-	}
+	
 
 	private Article getArticleById(int id) {
 		
