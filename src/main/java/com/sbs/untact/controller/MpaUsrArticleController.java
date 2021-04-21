@@ -21,8 +21,6 @@ public class MpaUsrArticleController {
 	
 	@Autowired
 	private ArticleService articleService;
-
-	
 	
 	@RequestMapping("/mpaUsr/article/doWrite")
 	@ResponseBody

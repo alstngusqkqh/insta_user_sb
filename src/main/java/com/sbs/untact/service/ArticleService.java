@@ -37,10 +37,12 @@ public class ArticleService {
 	}
 
 	public ResultData writeArticle(String title, String body) {
+		int boardId = 3; // 가짜 데이터
+		int memberId = 3; // 가짜 데이터
+		articleDao.writeArticle(boardId, memberId, title, body);
+		int id = 1;
 		
-		int id = articleDao.writeArticle(title, body);
-		
-		return new ResultData("S-1", id +"번 게시물이 작되었습니다." , "id", id);
+		return new ResultData("S-1", id +"번 게시물이 작성되었습니다." , "id", id);
 	}
 
 	public Article getArticleById(int id) {
