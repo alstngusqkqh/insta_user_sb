@@ -2,13 +2,17 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.sbs.untact.dao.ArticleDao">
 
 	<select id="getArticleById" resultType="Article">
 		SELECT *
 		FROM article AS A
 		WHERE A.id = #{id}
+		AND A.delStatus = 0
+	</select>
+
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
 	</select>
 
 	<update id="modifyArticle">
@@ -19,7 +23,7 @@
 		body = #{body}
 		WHERE id = #{id}
 	</update>
-
+	
 	<insert id="writeArticle">
 		INSERT INTO article
 		SET regDate = NOW(),
@@ -30,11 +34,10 @@
 		body = #{body}
 	</insert>
 
-	<update id="">
+	<update id="deleteArticleById">
 		UPDATE article
 		SET delStatus = 1,
 		delDate = NOW()
 		WHERE id = #{id}
 	</update>
-
 </mapper>
