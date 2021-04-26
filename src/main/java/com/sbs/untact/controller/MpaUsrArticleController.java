@@ -3,7 +3,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.sbs.untact.dto.Article;
+import com.sbs.untact.dto.Board;
 import com.sbs.untact.dto.ResultData;
 import com.sbs.untact.service.ArticleService;
 import com.sbs.untact.util.Util;
@@ -66,6 +68,12 @@ public class MpaUsrArticleController {
 	
 	@RequestMapping("/mpaUsr/article/list")
 	public String showList(int boardId) {
+		Board board = articleService.getBoardById(boardId);
+		
+		if (board == null) {
+			return "존재하지 않는 게시판";
+		}
+		
 		return "mpaUsr/article/list";
 	}
 
