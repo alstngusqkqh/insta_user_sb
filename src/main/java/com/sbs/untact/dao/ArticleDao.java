@@ -16,4 +16,6 @@ public interface ArticleDao {
 	void deleteArticleById(@Param("id") int id);
 
 	Board getBoardById(@Param("id")int id);
+
+	int getArticlesTotalCount(@Param("boardId") int boardId);
 }
